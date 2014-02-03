@@ -11,13 +11,13 @@ cd to the bcd3 dir
 
 `npm install`
 
-run `sudo sh get-data.sh` to generate sample data in neo4j
-
 
 RUN
 ---
 
 `sudo sh start.sh` to start the server.js node server with the correct env vars
+
+run `sudo sh get-data.sh` to generate sample data in neo4j
 
 browse to `http://localhost:9494`. this should show 4 dots connected to each other (1 block, connected to 3 addresses)
 
