@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "description": "bcd3",
   "dependencies": {
-      "graphsvc": "1.1.1",
-      "jade": "1.1.5",
-      "express": "3.4.8",
-      "superagent": "0.16.0"
+    "graphsvc": "1.1.1",
+    "jade": "1.1.5",
+    "express": "3.4.8",
+    "superagent": "0.16.0",
+    "async": "~0.2.10"
   }
 }
