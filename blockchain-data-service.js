@@ -26,6 +26,7 @@
 var request = require('superagent');
 
 var env = process.env;
+console.log('uri', env.SERVICE_URI);
 
 // create some dummy data...
 
@@ -89,3 +90,7 @@ function post(path, data) {
             });
         });
 }
+
+process.on('uncaughtException', function (err) {
+    console.log(err);
+});     

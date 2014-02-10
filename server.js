@@ -2,7 +2,6 @@ var graphsvc = require('graphsvc');
 var express = require('express');
 
 var env = process.env;
-
 var app = graphsvc(env.NEO4J_URI, env.NEO4J_USERNAME, env.NEO4J_PASSWORD);
 
 app.set('views', __dirname + '/webapp/views');
@@ -22,7 +21,7 @@ app.endpoint("address", {
   collectionName: "addresses"
 });
 app.endpoint("block.addresses", "address.blocks", "contains");
-  
+
 var port = process.env.PORT;
 
 if(port) {
@@ -32,3 +31,7 @@ if(port) {
 } else {
   exports.app = app;
 }
+
+process.on('uncaughtException', function (err) {
+    console.log(err);
+});
