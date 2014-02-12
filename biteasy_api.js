@@ -16,23 +16,17 @@ var async = require('async');
 
 var testnet = 'https://api.biteasy.com/testnet/v1';
 var blocks;
-var per_page = 20;
+var per_page = 39;
 
-var writeBlocks = function(blocks) {
-  console.log('number of blocks:', blocks.length);
-  async.each(
-    blocks,
-    function writeBlockToFile(block, next) {
-      var blockHeight = block.height;
-      var tx = JSON.stringify(block);
-      fs.writeFile('./dat/block_' + blockHeight, tx, {flags: 'w', encoding: 'utf8'}, function(err) {
-        if (err) throw err;
+var writeBlocks = function(page, blocks) {
+  console.log(blocks.length + ' blocks on page ' + page);
+  var block_to = blocks[0].height;
+  var block_from = blocks[blocks.length - 1].height;
+  var tx = JSON.stringify(blocks);
 
-        // console.log('block_' + blockHeight + ' written');
-        next();
-      });
-    },
-    function finalFunctionToCall(err) {
+  fs.writeFile('./dat/blocks_' + block_to + '_' + block_from,
+    tx,
+    function(err) {
       if (err) throw err;
 
       console.log('done writing blocks');
@@ -40,6 +34,7 @@ var writeBlocks = function(blocks) {
 };
 
 var grabBlocks = function(page, per_page) {
+  // console.log('requesting page', page);
   request
   .get(testnet + '/blocks?page='+page+'&per_page='+per_page)
   .set('Content-Type', 'application/json')
@@ -49,8 +44,7 @@ var grabBlocks = function(page, per_page) {
     }
 
     blocks = res.body.data.blocks;
-    // console.log('blocks\n', blocks);
-    writeBlocks(blocks);
+    writeBlocks(page, blocks);
   });
 };
 
@@ -61,16 +55,23 @@ var grabTransactions = function() {
    * [2] extract the block_hash
    * [3] grabTransactions in that block_hash
    * [4] save transactions into their files
+   *
+   * TOTAL ESTIMATED BLOCKS
+   * 39*10 = 390 blocks
    */
 };
 
 var page = 1;
 var total_pages = 10; //set the total number of pages to pull
+var delay;
 while (page <= total_pages) {
+  delay = page * 1000;
 
-  setTimeout(function() {
-    grabBlocks(page, per_page);
-  }, 5000);
+  (function(page, abc) {
+    setTimeout(function(hello) {
+      grabBlocks(page, per_page);
+    }, abc);
+  })(page, delay);
 
   page++;
 }
